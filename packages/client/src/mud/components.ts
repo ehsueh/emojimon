@@ -1,12 +1,11 @@
-import { defineNumberComponent } from "@latticexyz/std-client";
+import { defineCoordComponent } from "@latticexyz/std-client";
 import { world } from "./world";
 
 export const contractComponents = {
-  Counter: defineNumberComponent(world, {
+  Position: defineCoordComponent(world, {
     metadata: {
-      contractId: "component.Counter",
+      contractId: "component.Position",
     },
   }),
 };
-
 export const clientComponents = {};
