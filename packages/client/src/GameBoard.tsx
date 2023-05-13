@@ -1,14 +1,18 @@
 import { useComponentValue } from "@latticexyz/react";
+import { twMerge } from "tailwind-merge";
 import { useMUD } from "./MUDContext";
 import { useKeyboardMovement } from "./useKeyboardMovement";
+import { useMapConfig } from "./useMapConfig";
 
 export const GameBoard = () => {
-  const rows = new Array(20).fill(0).map((_, i) => i);
-  const columns = new Array(20).fill(0).map((_, i) => i);
+
+  const { width, height } = useMapConfig();
+  const rows = new Array(height).fill(0).map((_, i) => i);
+  const columns = new Array(width).fill(0).map((_, i) => i);
 
   const {
     components: { Position, Player },
-    api: { moveTo, joinGame },
+    api: { joinGame },
     playerEntity,
   } = useMUD();
 
@@ -23,7 +27,10 @@ export const GameBoard = () => {
         columns.map((x) => (
           <div
             key={`${x},${y}`}
-            className="w-8 h-8 flex items-center justify-center cursor-pointer hover:ring"
+            className={twMerge(
+              "w-8 h-8 flex items-center justify-center",
+              canJoinGame ? "cursor-pointer hover:ring" : null
+            )}
             style={{
               gridColumn: x + 1,
               gridRow: y + 1,
@@ -32,8 +39,6 @@ export const GameBoard = () => {
               event.preventDefault();
               if (canJoinGame) {
                 joinGame(x, y);
-              } else {
-                moveTo(x, y);
               }
             }}
           >
