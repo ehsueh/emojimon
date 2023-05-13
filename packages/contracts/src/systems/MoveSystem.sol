@@ -30,7 +30,6 @@ contract MoveSystem is System {
     coord.x = (coord.x + int32(mapConfig.width)) % int32(mapConfig.width);
     coord.y = (coord.y + int32(mapConfig.height)) % int32(mapConfig.height);
 
-    PositionComponent position = PositionComponent(getAddressById(components, PositionComponentID));
     position.set(entityId, coord);
   }
 }
