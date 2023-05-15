@@ -9,7 +9,7 @@ export enum TerrainType {
   
   export const terrainTypes: Record<TerrainType, TerrainConfig> = {
     [TerrainType.TallGrass]: {
-      emoji: "🌳",
+      emoji: "🌿",
     },
     [TerrainType.Boulder]: {
       emoji: "🪨",

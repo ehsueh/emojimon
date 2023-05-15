@@ -20,6 +20,11 @@ export const contractComponents = {
       contractId: "component.Movable",
     },
   }),
+  Obstruction: defineBoolComponent(world, {
+    metadata: {
+      contractId: "component.Obstruction",
+    },
+  }),
   Player: overridableComponent(
     defineBoolComponent(world, {
       metadata: {
