@@ -1,5 +1,5 @@
-import { EntityID } from "@latticexyz/recs";
-import { useComponentValue } from "@latticexyz/react";
+import { EntityID, Has, getComponentValueStrict } from "@latticexyz/recs";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { twMerge } from "tailwind-merge";
 import { useMUD } from "./MUDContext";
 import { useKeyboardMovement } from "./useKeyboardMovement";
@@ -35,6 +35,16 @@ export const GameBoard = () => {
     }
   }, [encounterId]);
 
+  const otherPlayers = useEntityQuery([Has(Player), Has(Position)])
+  .filter((entity) => entity !== playerEntity)
+  .map((entity) => {
+    const position = getComponentValueStrict(Position, entity);
+    return {
+      entity,
+      position,
+    };
+  });
+
   return (
     <div className="inline-grid p-2 bg-lime-500 relative overflow-hidden">
       {rows.map((y) =>
@@ -44,6 +54,10 @@ export const GameBoard = () => {
           )?.type;
 
           const hasPlayer = playerPosition?.x === x && playerPosition?.y === y;
+
+          const otherPlayersHere = otherPlayers.filter(
+            (p) => p.position.x === x && p.position.y === y
+          );
 
           return (
             <div
@@ -80,7 +94,12 @@ export const GameBoard = () => {
                     {terrain.emoji}
                   </div>
                 ) : null}
-                <div className="relative">{hasPlayer ? <>🤠</> : null}</div>
+                <div className="relative">
+                  {hasPlayer ? <>🤠</> : null}
+                  {otherPlayersHere.map((p) => (
+                    <span key={p.entity}>😎</span>
+                  ))}
+                </div>
               </div>
             </div>
           );
